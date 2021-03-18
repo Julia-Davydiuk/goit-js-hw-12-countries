@@ -33,6 +33,8 @@ ul {
 }
 
 .search__input {
+  font-size: 16px;
+  font-weight: 700;
   width: 400px;
   height: 50px;
   padding: 10px;
@@ -41,14 +43,18 @@ ul {
   outline: none;
 }
 
-.search__result-text{
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 50px;
+.search__list-result {
+  font-size: 16px;
+  font-weight: 700;
 }
 
-.search__result-image {
-  margin: 20px;
+.search__result-text, 
+.search__result-image{
+  font-size: 16px;
+  font-weight: 400;
+
+  max-width: 40%;
+  display: inline-block;
+  vertical-align: top;
+  padding: 32px;
 }

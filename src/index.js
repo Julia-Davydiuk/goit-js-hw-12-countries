@@ -4,49 +4,53 @@ import template from './templates/template.hbs';
 import debounce from 'lodash.debounce';
 import '@pnotify/core/dist/BrightTheme.css';
 import 'material-design-icons/iconfont/material-icons.css';
-
-import { error, alert, defaultModules} from "@pnotify/core";
+import { Stack } from '@pnotify/core';
+import { alert, defaultModules} from "@pnotify/core";
 import "@pnotify/core/dist/PNotify.css";
 import * as PNotifyMobile from '@pnotify/mobile/dist/PNotifyMobile.js';
 
 defaultModules.set(PNotifyMobile, {});
 
-  alert({
-    text: 'Too many matches found. Please enter a more specific quety.'
-  });
-
   const inputRef = document.querySelector('.search__input');
   const resultsRef = document.querySelector('.search__result');
-  inputRef.addEventListener('input', debounce(markup, 500));
+  const listResultRef = document.querySelector('.search__list-result');
 
-  function markup (event) {
+  inputRef.addEventListener('input', debounce(onInput, 500));
+
+  function onInput (event) {
     resultsRef.innerHTML = '';
 
-    const countrySearchName = event.target.value;
-    fetchCountries(countrySearchName)
+    const searchQuery = event.target.value;
+    fetchCountries(searchQuery)
       .then(data => {
+        listResultRef.innerHTML = '';
+
         if (data.length > 10) {
+          resultsRef.innerHTML = '';
           alert({
             text: 'Too many matches found. Please enter a more specific query!',
             type: 'error',
-            delay: 4000,
+            delay: 2000,
             stack: new Stack({
               dir1: 'up',
             }),
           });
+          return;
         }
-        if (data.length >= 2 && data.length <= 10) {
-          resultsRef.insertAdjacentHTML(
-            'beforeend',
-            createListCountriesTemplate(data),
-            // search__result-languages-list 
-          );
+        if (data.length > 1) {
+          const markup = data.reduce((acc, item) => {
+            acc += `<li>${item.name}</li>`;
+            return acc;
+          }, '');
+          listResultRef.innerHTML = markup;
         }
         if (data.length === 1) {
+
           resultsRef.insertAdjacentHTML(
             'beforeend',
-            createCountryPropertiesTemplate(data),
+            template(data),
           );
+          return;
         }
       })
       .catch(console.log);
