@@ -53,8 +53,14 @@ ul {
   font-size: 16px;
   font-weight: 400;
 
-  max-width: 40%;
+  /* max-width: 40%; */
   display: inline-block;
   vertical-align: top;
   padding: 32px;
+}
+
+.search__result-flag {
+  padding: 30px;
+  width: 300px;
+  height: 200px;
 }
