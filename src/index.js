@@ -18,18 +18,12 @@ defaultModules.set(PNotifyMobile, {});
   inputRef.addEventListener('input', debounce(onInput, 500));
 
   function onInput (event) {
-    const searchQuery = event.target.value;
+    const searchQuery = event.target.value !== '' ? `name/${event.target.value}` : '';
     fetchCountries(searchQuery)
+    .then(response => response.json())
       .then(data => {
         listResultRef.innerHTML = '';
-
-        // if (inputRef === ' '){
-        //   return alert ('ggg')
-        // }
-
-        // if (inputRef === '') {
-        //   return
-        // }
+        resultsRef.innerHTML = '';
         if (data.length > 10) {
           alert({
             text: 'Too many matches found. Please enter a more specific query!',
@@ -46,7 +40,7 @@ defaultModules.set(PNotifyMobile, {});
             acc += `<li>${item.name}</li>`;
             return acc;
           }, '');
-          listResultRef.innerHTML = markup;
+          listResultRef.insertAdjacentHTML('beforeend', markup);
         }
         if (data.length === 1) {
           resultsRef.insertAdjacentHTML(
@@ -55,5 +49,5 @@ defaultModules.set(PNotifyMobile, {});
           );
         }
       })
-      .catch(console.log);
+      .catch((err) => console.log(err));
   }
