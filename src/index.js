@@ -18,15 +18,19 @@ defaultModules.set(PNotifyMobile, {});
   inputRef.addEventListener('input', debounce(onInput, 500));
 
   function onInput (event) {
-    resultsRef.innerHTML = '';
-
     const searchQuery = event.target.value;
     fetchCountries(searchQuery)
       .then(data => {
         listResultRef.innerHTML = '';
 
+        // if (inputRef === ' '){
+        //   return alert ('ggg')
+        // }
+
+        // if (inputRef === '') {
+        //   return
+        // }
         if (data.length > 10) {
-          resultsRef.innerHTML = '';
           alert({
             text: 'Too many matches found. Please enter a more specific query!',
             type: 'error',
@@ -45,12 +49,10 @@ defaultModules.set(PNotifyMobile, {});
           listResultRef.innerHTML = markup;
         }
         if (data.length === 1) {
-
           resultsRef.insertAdjacentHTML(
             'beforeend',
             template(data),
           );
-          return;
         }
       })
       .catch(console.log);
